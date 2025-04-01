@@ -1,0 +1,312 @@
+#include<stdio.h>
+
+int curr[5][5],maxclaim [5] [5],avl [5], need[5][5]; int alloc[5],maxres [5],count=0,i,j, process, resource,k=1;
+
+int main()
+
+{ printf("\n enter the no. of process"); scanf("%d",&process); printf("\n enter the no. of resource");
+
+scanf("%d",&resource); for(i=0;i<resource;i++)
+
+{ printf("\n enter the instance for resource-%d:",k++); scanf("%d",&maxres[i]); }
+
+printf("\n enter max resource table"); for(i=0;i<process;i++)
+
+{ for(j=0;j<resource;j++) { scanf("%d",&maxclaim[i][j]);
+
+printf("\n enter allocation resource table\n"); for(i=0;i<process;i++) { for(j=0;j<resource;j++)
+
+{ scanf("%d",&curr[i][j]);
+
+} printf("\n the instance of resource \n"); for(i=0;i<resource;i++)
+
+{
+
+printf("\t%d",maxres[i]);
+
+} printf("\n allocation table\n"); for(i=0;i<process;i++) { for(j=0;j<resource;j++) { printf("\t%d",curr[i][j]);
+} printf("\n"); } printf("\n max table\n"); for(i=0;i<process;i++)
+
+{ for(j=0;j<resource:j++) { printf("\t%d",maxclaim[i][j]);
+
+printf("\n"); } for(i=0;i<process;i++) { for(j=0;j<resource;j++) { alloc[j]+=curr[i][j];
+} } printf("\n total allocation\n"); for(i=0;i<resource;i++)
+
+{ printf("\t%d",alloc[i]); } printf("\n available resource:\n"); for(i=0;i<resource;i++)
+
+{ avl[i]=maxres[i]-alloc[i]; }
+
+for(i=0;i<resource;i++) { printf("\t%d",avl[i]); } printf("\n content of need matrix is :\n");
+
+for(i=0;i<process;i++) { for(j=0;j<resource;j++)
+
+{ need[i][j]=maxclaim[i][j]-curr[i][j]; if(need[i][j]<=avl[j]) count++;
+
+} } for(i=0;i<process;i++) { for(j=0;j<resource;j++) { printf("\t%d",need[i][j]);
+}
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+Slot 2
+
+1) Modify above program so as to include the following:
+
+a) Accept Request for a process
+
+b) Resource request algorithm
+
+c) Safety algorithm
+
+Consider a system with 'n' processes and 'm' resource types. Accept number of instances for every resource type. For each process accept the allocation and maximum requirement matrices. Write a program to display the contents of need matrix and to check if the given request of a process can be granted immediately or not.
+
+/* Resource Allocation
+
+Created on:
+
+Author: root
+
+*/#include<stdio.h> int n,m,i,j,k,flag,safe; int a[50][50],av [15],max [50][50], finish [10], need [50][50],req[10]; char s[50],str[5];
+
+void get_data()
+
+{ printf("\nEnter number of processes: "); scanf("%d",&n); printf("\nEnter number of resources: "); scanf("%d",&m); printf("\n Enter allocation matrix: "); for ( i = 0, j < n ;j++) {
+
+for(j=0;j<m;j++) {
+
+scanf("%d",&a[i][j]);
+
+}//for
+
+}//for printf("\n Enter MAX matrix"); for ( i = 0, j < n ,j++) {
+
+for(j=0;j<m;j++)
+
+{ scanf("%d",&max[i][j]);
+
+}//for
+
+}//for
+
+printf("\nEnter Available Array: ");
+
+r( i = 0, j < m ,j++) scanf("%d",&av[i]);
+
+for ( i = 0; i < n ;i++)
+
+}//get_data
+
+void put_data()
+
+{ printf("\nAllocation matrix is.......\n"); for ( i = 0, j < n ;i++) {
+
+for(j=0;j<m;j++)
+
+{ printf("%d\t",a[i][j]);
+
+}//for
+
+}//for
+
+printf("\n"); printf("\nMax matrix is.......\n"); for ( i = 0; i < n ;i++) { for(j=0;j<m;j++)
+{
+
+printf("%d\t",max[i][j]);
+
+}//for
+
+printf("\n");
+
+}//for
+
+printf("\nAvailable Array is.....\n");
+
+for ( i = 0 ;j<m,j++)
+
+printf("%d\t",av[i]);
+
+printf("\nFinish Array\n");
+
+r( i = 0; i < n ;i++)
+
+printf("%d\t", finish[i]);
+
+}
+
+void calc_need()
+
+{ for r( i = 0, i < n ,i++)
+
+{ for(j=0;j<m;j++)
+
+{
+
+need[i][j]=max[i][j]=a[i][0];
+
+}
+
+}
+
+printf("\nNeed array is.....\n");
+
+for ( i = 0; i < n ;i++)
+
+{
+
+for(j=0;j<m;j++)
+
+{
+
+printf("%d\t",need[i][j]);
+
+}
+
+printf("\n");
+
+}
+
+}//calc_need
+
+int check_need(int i)
+
+{
+
+flag=0;
+
+for ( j = 0, j < m ,j++) {
+
+if(need[i][j] > av[j])
+
+{
+
+flag=1;
+
+break;
+
+}//if
+
+}//for
+
+return flag;
+
+}//check_need
+
+void safe_state()
+
+{
+
+for(i=0;i<n;i++)
+
+finish[i]=0;
+
+strcpy(s,"10");
+
+r( i = 0, j < n ;j++) {
+
+{
+
+if(check_need(i)==0)
+
+for(k=0;k<m;k++)
+
+av[k]=av[k]+a[i][k];
+
+sprintf(str,"%d",i);
+
+strcat(s,"P");
+
+strcat(s,str);
+
+strcat(s, ");
+
+puts(s);
+
+}//if
+
+else
+
+finish[i il = 1
+}//for
+
+}//safe_state
+
+void res_req()
+
+{ safe=0; printf("Enter the process number\n"); scanf("%d",&i); printf("Enter the request\n"); for ( k = 0; k < m ;k++) scanf("%d",&req[k]); for r( k = 0; k < m ;k+++) { if(req[k] > need[i][k] || req[k] > av[k]) { safe=1; break; } }
+
+printf("\nEnter available array"); for ( j = 0; j < m ;j++) scanfav[j]); if(safe==0)
+
+{ printf("The request can be granted \n"); for ( k = 0; k < m ;k++) { av[k]=av[k]-req[k]; a[i][k]=a[i][k]+req[k]; need[i][k]=need[i][k]-req[k]; }
+
+printf("\nNeed array is.....\n");
+
+for(i=0;i<n;i++)
+
+{ for(j=0;j<m;j++) { } printf("\n"); }
+
+printf("%d\t", need[i][j]);
+
+}//if else printf("\nThe request can not be granted"); }//res_req
+
+void main()
+
+int p,f;
+
+{ f = 0 get_data(); put_data(); calc_need(); aaa: safe_state(); or( k = 0, k < n ,k+++) {
+
+if(finish[k]==1)
+
+{ if(check_need(k)==0) { for(p=0;p<m;p++) av[p]=av[p]+a[k][p]; sprintf(str,"%d",k); strcat(s,"P"); strcat(s,str); strcat(s," ");
+finish[k]=0;
+
+}//if
+
+else
+
+f=1;
+
+}//if
+
+}//for
+
+if(f==0)
+
+{
+
+printf("System is in safe state");
+
+printf("\nSafe sequence\n");
+
+puts(s);
+
+}//if
+
+else
+
+printf("System is not in safe state");
+
+res_req();
+
+put_data();
+
+if (safe==0)
+
+goto aaa;
+
+}//main
+
+
+
+
+
+
+

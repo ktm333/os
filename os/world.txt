@@ -1,0 +1,279 @@
+
+
+
+
+
+/* Write a program to simulate Sequential (Contiguous) file allocation method. Assume disk  with n number of blocks. Give value of n as input. Write menu driver program with menu  options as mentioned above and implement each option.*/
+#include<stdio.h>
+#include<stdlib.h>
+#include<string.h>
+int bv[50],i,st,j,len,c,k;
+char name[10][30];
+int start[10],length[10],num=0;
+void dislayBitVector()
+{
+ printf("\n Bit Vector contents \n");
+ for(i=0;i<50;i++)
+ printf(" %d ",bv[i]);
+}
+void creteFile()
+{
+ char temp[30];
+ printf("Enter the name of the file :");
+ scanf("%s",&temp);
+ for( i=0;i<num;i++)
+ {
+ if(strcmp(name[i],temp)==0)
+ {
+ printf("\n Filename already exists");
+ } }
+ strcpy(name[num],temp);
+ printf("Enter the start block of the file : ");
+ scanf("%d",&start[num]);
+ printf("Enter the length of the file : ");
+ scanf("%d",&length[num]);
+ for(j=start[num];j<(start[num]+length[num]);j++)
+ if(bv[j]==1)
+ {
+printf("File can not be allocated...Block already allocated");
+ strcpy(name[num],"-");
+ start[num]=0;
+ length[num]=0;
+ return;
+ }
+ for(j=start[num];j<(start[num]+length[num]);j++)
+ {
+ bv[j]=1;
+ printf("\n%d->%d",j,bv[j]);
+ }
+
+ num++;
+}
+void showDirectory()
+{
+ printf("Directory contents\n");
+ printf("%s%40s%40s\n","File Name","Start Block","Length");
+ for( i=0;i<num;i++)
+ {
+ if(strcmp(name[i],"-")!=0)
+ {
+ printf("%s%40d%40d\n",name[i],start[i],length[i]);
+ }
+ }
+}
+void deleteFile()
+{
+ char temp[10];
+ printf("\nEnter the name of the file to delete :");
+ scanf("%s",&temp);
+ for( i=0;i<num;i++)
+ {
+ if(strcmp(name[i],temp)==0)
+ {
+ for(j=start[i];j<(start[i]+length[i]);j++)
+ {
+ bv[j]=0;
+ printf("\n%d->%d",j,bv[j]);
+ }
+ printf("\n File successfully deleted..");
+ strcpy(name[i],"-");
+ start[i]=0;
+ length[i]=0;
+ return;
+ }
+ }
+ printf("\n File not found..");
+}
+int main()
+{
+ int ch=0;
+ for(i=0;i<50;i++)
+ bv[i]=0;
+ do
+ {
+ printf("\n ******* Menu ********");
+ printf("\n 1. Show Bit Vector");
+ printf("\n 2. Create New File");
+ printf("\n 3. Show Directory");
+ printf("\n 4. Delete File");
+ printf("\n 5. Exit");
+ printf("\n Enter your choice : ");
+ scanf("%d",&ch);
+ switch(ch)
+ {
+ case 1: dislayBitVector();
+ break;
+ case 2: creteFile();
+ break;
+ case 3: showDirectory();
+ break;
+ case 4: deleteFile();
+ break;
+ //case 5: exit(0);
+ }
+ }while(ch!=5);
+return 0;
+}
+
+
+
+
+
+Slot- II
+/* i. Write a program to simulate Linked file allocation method. Assume disk with n number of blocks. Give value of n as input. Write menu driver program with menu options as mentioned above and implement each option. */
+#include<stdio.h>
+#include<conio.h>
+struct file
+{
+char fname[10];
+int start,size,block[10];
+}f[10];
+main()
+{
+int i,j,n;
+clrscr();
+printf("Enter no. of files:");
+scanf("%d",&n);
+for(i=0;i<n;i++)
+{
+printf("Enter file name:");
+scanf("%s",&f[i].fname);
+printf("Enter starting block:");
+scanf("%d",&f[i].start);
+f[i].block[0]=f[i].start;
+printf("Enter no.of blocks:");
+scanf("%d",&f[i].size);
+printf("Enter block numbers:");
+for(j=1;j<=f[i].size;j++)
+{
+ scanf("%d",&f[i].block[j]);
+}
+}
+printf("File\tstart\tsize\tblock\n");
+for(i=0;i<n;i++)
+{
+ printf("%s\t%d\t%d\t",f[i].fname,f[i].start,f[i].size);
+ for(j=1;j<=f[i].size-1;j++)
+ printf("%d--->",f[i].block[j]);
+ printf("%d",f[i].block[j]);
+ printf("\n");
+}
+getch();
+}
+
+
+
+
+
+
+
+
+/* i. Write a program to simulate Indexed file allocation method. Assume disk with n number of blocks. Give value of n as input. Write menu driver program with menu options as mentioned above and implement each option */
+#include<stdio.h>
+#include<stdlib.h>
+int f[50],index1[50],i, n, st, len, j, c, k,
+ind,count=0,cnt=0,key[50],blocks[50];
+void show_bitvector()
+{
+printf("\n vector contents....\n");
+for(i=0;i<50;i++)
+ printf(" %d ",f[i]);
+}
+void show_dir()
+{
+printf("\nIndex Block Number\n");
+for(k=0;k<cnt;k++)
+ printf("%d --------> %d\n",key[k],blocks[k]);
+}
+void create()
+{
+ x:printf("\nEnter the index block: ");
+ scanf("%d",&ind);
+ if(f[ind]!=1)
+ {
+ printf(" \n Enter number of blocks needed for the index %d on the disk : \n", ind);
+ scanf("%d",&n);
+ }
+ else
+ {
+ printf("%d index is already allocated \n",ind);
+ goto x;
+ }
+ y: count=0;
+ printf("\n Enter block numbers for the index %d on the disk : \n", ind);
+ for(i=0;i<n;i++)
+ {
+ scanf("%d",&index1[i]);
+ if(f[index1[i]]==0)
+ count++;
+ } 
+j=0 ;
+ if(count==n) 
+{
+f[ind]=1;
+ for(j=0;j<n;j++)
+ {
+ f[index1[j]]=1;
+ blocks[cnt]=index1[j];
+ key[cnt]=ind;
+ cnt++;
+ }
+ printf("Allocated\n");
+ printf("File Indexed\n");
+ for(k=0;k<n;k++)
+ printf("%d --------> %d : %d\n",ind,index1[k],f[index1[k]]);
+} 
+else
+ {
+ printf("File in the index is already allocated \n");
+ printf("Enter another file index");
+ goto y;
+ }
+}
+void deleteindex()
+{
+ int flag=0;
+ printf("\nEnter the index block to delete: ");
+ scanf("%d",&ind);
+ for(i=0;i<cnt;i++)
+ {
+ if(key[i]==ind)
+ {
+ flag=1;
+ f[ind]=0;
+ printf("\n blocks = %d",blocks[i]);
+ f[blocks[i]]=0;
+ blocks[i]=0;
+ key[i]=0;
+ }
+ }
+ if(flag==1)
+ printf("\n File deleted...\n\n");
+ else
+ printf("\n File not found.. \n\n");
+}
+int main()
+{
+int ch;
+for(i=0;i<50;i++)
+ f[i]=0;
+while(1)
+{
+ printf("\n1.Show bit vector\n");
+ printf("2.Create new file\n");
+ printf("3.Show directory\n");
+ printf("4.Delete file\n");
+ printf("5.Exit\n");
+ printf("Enter your choice (1-5):");
+ scanf("%d",&ch);
+ switch(ch)
+ {
+ case 1:show_bitvector(); break;
+ case 2: create(); break;
+ case 3:show_dir(); break;
+ case 4: deleteindex(); break;
+ case 5: exit(0);
+ }
+}
+return 0;
+}
